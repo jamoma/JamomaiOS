@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     
 	TTValue						audioObjectArguments;
     
-	TTFoundationInit();
+	TTAudioGraphInit();
 	
 	memset(&mInitData, 0, sizeof(mInitData));
 	audioObjectArguments.setSize(3);
