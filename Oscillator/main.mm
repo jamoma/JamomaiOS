@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 	TTAudioGraphInit();
 	
 	memset(&mInitData, 0, sizeof(mInitData));
-	audioObjectArguments.setSize(3);
+	audioObjectArguments.resize(3);
     
 	// Create the Graph
     
-	audioObjectArguments.set(0, TT("thru"));	// <<-- THIS IS THE SINK ON WHICH WE WILL PULL
+	audioObjectArguments.set(0, TTSymbol("thru"));	// <<-- THIS IS THE SINK ON WHICH WE WILL PULL
 	audioObjectArguments.set(1, 1);				// <<-- NUMBER OF INLETS
 	audioObjectArguments.set(2, 1);
-	TTObjectInstantiate(TT("audio.object"), (TTObjectPtr*)&obj0, audioObjectArguments);
+	TTObjectBaseInstantiate(TT("audio.object"), (TTObjectBasePtr*)&obj0, audioObjectArguments);
 	obj0->mKernel->setAttributeValue(TT("maxNumChannels"), 0);
 	obj0->mKernel->setAttributeValue(TT("mute"), 0);
 	obj0->mKernel->setAttributeValue(TT("bypass"), 0);
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     
     
     
-    TTObjectPtr dataspace = NULL;
+    TTObjectBasePtr dataspace = NULL;
 	TTErr		err = kTTErrNone;
 	TTValue		x;
 	TTValue		y;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 	if (err)
 		return err;
 	
-	err = TTObjectInstantiate(TT("dataspace"), &dataspace, kTTValNONE);
+	err = TTObjectBaseInstantiate(TT("dataspace"), &dataspace, kTTValNONE);
 	if (err)
 		return err;
 	
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 	
 	// Quiting the App, so we can free ourselves
 	
-	TTObjectRelease(&dataspace);
+	TTObjectBaseRelease(&dataspace);
 	
     return retVal;
 }
