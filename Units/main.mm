@@ -20,26 +20,22 @@ extern "C" TTErr TTLoadJamomaExtension_DataspaceLib(void);
 
 int main(int argc, char *argv[]) 
 {
- 	TTObjectPtr dataspace = NULL;
-	TTErr		err = kTTErrNone;
-	TTValue		x;
-	TTValue		y;
-	
 	// this loads the DataspaceLib, which calls the Foundation init function.
-	err = TTLoadJamomaExtension_DataspaceLib();
+	TTErr err = TTLoadJamomaExtension_DataspaceLib();
 	if (err)
 		return err;
+
 	
-	err = TTObjectInstantiate(TT("dataspace"), &dataspace, kTTValNONE);
-	if (err)
-		return err;
-	
-	dataspace->setAttributeValue(TT("dataspace"), TT("temperature"));
-	dataspace->setAttributeValue(TT("inputUnit"), TT("C"));
-	dataspace->setAttributeValue(TT("outputUnit"), TT("F"));
+ 	TTObject	dataspace("dataspace");
+	TTValue		x;
+	TTValue		y;	
+		
+	dataspace.setAttributeValue(TT("dataspace"), TT("temperature"));
+	dataspace.setAttributeValue(TT("inputUnit"), TT("C"));
+	dataspace.setAttributeValue(TT("outputUnit"), TT("F"));
 	
 	x = 100.0;
-	dataspace->sendMessage(TT("convert"), x, y);
+	dataspace.sendMessage(TT("convert"), x, y);
 	TTLogMessage("100ºC should be 212ºF, and the dataspace says it is...  %f", TTFloat64(y));
 	
 	
@@ -48,12 +44,6 @@ int main(int argc, char *argv[])
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	int retVal = UIApplicationMain(argc, argv, nil, nil);
 	[pool release];
-	
-	
-	
-	// Quiting the App, so we can free ourselves
-	
-	TTObjectRelease(&dataspace);
 	
     return retVal;
 }
